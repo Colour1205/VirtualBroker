@@ -15,6 +15,8 @@ class Order:
     _user_id: Id
     _symbol: str
     _order_type: OrderType
+    _order_side: OrderSide
+    _order_status: OrderStatus
     _quantity: Quantity
     _time: Time
 
@@ -26,6 +28,7 @@ class Order:
         self._order_side = order_side
         self._order_type = order_type
         self._time = Time.now()
+        self._order_status = OrderStatus.NEW
 
     @property
     def order_id(self) -> "Id":
@@ -55,22 +58,18 @@ class Order:
     def quantity(self) -> "Quantity":
         return self._quantity
 
-    @quantity.setter
-    def quantity(self, new_quantity: "Quantity") -> None:
-        if new_quantity <= 0:
-            raise ValueError("Quantity must be positive")
-        self._quantity = new_quantity
-        self._time = Time.now()  # optionally update time when quantity changes
-
-    def update_time(self) -> None:
-        """Manually update the order time (optional)."""
-        self._time = Time.now()
+    @order_status.setter
+    def set_status(self, new_status: OrderStatus) -> None:
+        self._order_status = new_status
 
     def get_id(self) -> "Id":
         return self._order_id
 
+    def filled(self) -> bool:
+        return self._order_status == OrderStatus.FILLED
 
-class OrderBuilder:
+
+class CreateOrder:
 
     def __init__(self):
         self._user_id = None
@@ -102,5 +101,5 @@ class OrderBuilder:
             self._quantity = quantity
         return self
     
-    def build(self) -> Order:
+    def create(self) -> Order:
         return Order(self._id, self._user_id, self._symbol, self._order_side, self._order_type, self._quantity)

@@ -7,30 +7,36 @@ class Position:
     SYMBOL must be fixed for a position
     """
     SYMBOL: str
-    history: List[Order]
+    history: Dict[str, Order]
     book_cost: Money
     quantity: Quantity
     
     def __init__(self, symbol: str):
         self.SYMBOL = symbol
-        self.history = []
+        self.history = {}
         self.book_cost = Money(0)
         self.quantity = Quantity(0)
 
     def add(self, order: Order) -> bool:
+        """add order to position
+        return True if success, False otherwise
+        """
         # if order is not filled, return
         if not order.filled():
             return False
         
-        self.history.append(order)
+        # store order in history dictionary keyed by order_id
+        self.history[order.order_id] = order
         
-        # check if order is sell or buy
+        # update quantity and book cost
         if order.order_side == OrderSide.BUY:
             self.quantity += order.quantity
             self.book_cost += order.amount
         else:
             self.quantity -= order.quantity
             self.book_cost -= order.amount
+
+        return True
 
     def get_position_type(self) -> (str | None):
         """return whether this is a long position or short position
