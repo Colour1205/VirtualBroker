@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from backend.app.domain.value_objects import order_status
 from value_objects.quantity import Quantity
 from value_objects.order_type import OrderType
 from value_objects.order_side import OrderSide
@@ -11,7 +12,7 @@ class Order:
     """
     Order class stores the different attributes of an order
     """
-    _order_id: Id
+    _order_id: str
     _user_id: Id
     _symbol: str
     _order_type: OrderType
@@ -20,7 +21,7 @@ class Order:
     _quantity: Quantity
     _time: Time
 
-    def __init__(self, Id, user_id: Id, symbol: str, order_side: OrderSide, order_type: OrderType, quantity: float):
+    def __init__(self, Id, user_id: Id, symbol: str, order_side: OrderSide, order_type: OrderType, quantity: Quantity):
         self._order_id = Id.generate()
         self._user_id = user_id
         self._symbol = symbol
@@ -31,7 +32,7 @@ class Order:
         self._order_status = OrderStatus.NEW
 
     @property
-    def order_id(self) -> "Id":
+    def order_id(self) -> str:
         return self._order_id
 
     @property
@@ -62,7 +63,7 @@ class Order:
     def set_status(self, new_status: OrderStatus) -> None:
         self._order_status = new_status
 
-    def get_id(self) -> "Id":
+    def get_id(self) -> str:
         return self._order_id
 
     def filled(self) -> bool:
@@ -78,23 +79,23 @@ class CreateOrder:
         self._order_side = None
         self._quantity = None
 
-    def user_id(self, user_id: str) -> OrderBuilder:
+    def user_id(self, user_id: str) -> CreateOrder:
         self._user_id = user_id
         return self
     
-    def symbol(self, symbol: str) -> OrderBuilder:
+    def symbol(self, symbol: str) -> CreateOrder:
         self._symbol = symbol
         return self
 
-    def order_type(self, order_type: OrderType) -> OrderBuilder:
+    def order_type(self, order_type: OrderType) -> CreateOrder:
         self._order_type = order_type
         return self
 
-    def order_side(self, order_side: OrderSide) -> OrderBuilder:
+    def order_side(self, order_side: OrderSide) -> CreateOrder:
         self._order_side = order_side
         return self
     
-    def quantity(self, quantity: Quantity | float) -> OrderBuilder:
+    def quantity(self, quantity: Quantity | float) -> CreateOrder:
         if isinstance(quantity, float):
             self._quantity = Quantity(quantity)
         else:

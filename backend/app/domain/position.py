@@ -1,4 +1,9 @@
-from typing import List
+from typing import Dict, List
+
+from backend.app.domain.order import Order
+from backend.app.domain.value_objects.money import Money
+from backend.app.domain.value_objects.order_side import OrderSide
+from backend.app.domain.value_objects.quantity import Quantity
 
 class Position:
     """stores the order / avg_price / current hold history of a stock

@@ -3,5 +3,5 @@ class User:
     """
     def __init__(self):
         self.user_id = Id.generate()
-        self.positions = {}
+        self.portfolio = Portfolio()
         self.balance = 0

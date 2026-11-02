@@ -6,7 +6,7 @@ class Id:
     id class generates a random and unique id 
     """
     @staticmethod
-    def generate(self) -> Id:
+    def generate(self) -> str:
         timestamp = int(time.time() * 1000)
         random_part = uuid.uuid4().hex[:6]
         return f"{timestamp}-{random_part}"

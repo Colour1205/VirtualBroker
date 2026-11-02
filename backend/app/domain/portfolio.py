@@ -9,7 +9,7 @@ class Portfolio:
     def __init__(self) -> None:
         self.positions: Dict[str, Position] = {}
 
-    def get_market_value(self, market_prices: Dict[str, float]) -> float:
+    def get_market_value(self, market_prices: Dict[str, Money]) -> Money:
         """
         Calculate total market value across all positions using provided prices.
         """
@@ -21,7 +21,7 @@ class Portfolio:
             total += pos.market_value(price)
         return total
 
-    def get_unrealized_pnl(self, market_prices: Dict[str, float]) -> float:
+    def get_unrealized_pnl(self, market_prices: Dict[str, Money]) -> Money:
         """
         Calculate total unrealized P&L using provided prices.
         """

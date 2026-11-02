@@ -1,6 +1,5 @@
-class CancelOrderOutputBoundary:
-    """Use-case output boundary for canceling an order."""
+from .cancel_order_output_data import CancelOrderOutputData
 
+class CancelOrderOutputBoundary:
     def present(self, output_data: CancelOrderOutputData) -> None:
-        """Present the result of the cancel order use-case."""
         raise NotImplementedError
